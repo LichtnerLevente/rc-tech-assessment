@@ -1,4 +1,5 @@
 # Database challenge
+## Lichtner Levente
 
 ## Principles and rules
 

@@ -1,4 +1,5 @@
 # Coding challenge
+## Lichtner Levente
 
 ## How to use
 
