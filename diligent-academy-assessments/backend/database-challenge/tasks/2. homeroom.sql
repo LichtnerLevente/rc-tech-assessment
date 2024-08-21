@@ -20,3 +20,5 @@ VALUES (1, '9A'), -- Assuming John's ID is 1
        (2, '9A'), -- Assuming Adam's ID is 2
        (3, '9B'); -- Assuming Lucy's ID is 3
 
+--add index to improve read operations by class name
+CREATE INDEX idx_student_homeroom_homeroom_name ON student_homeroom(homeroom_name);
