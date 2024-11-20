@@ -50,11 +50,13 @@ async function setup() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
       board_id INTEGER NOT NULL,
-      status_id INTEGER,
+      status_id INTEGER NOT NULL,
       description TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      deleted_at TIMESTAMP
+      deleted_at TIMESTAMP,
+      FOREIGN KEY (board_id) REFERENCES boards(id),
+      FOREIGN KEY (status_id) REFERENCES statuses(id)
     );
   `);
 
