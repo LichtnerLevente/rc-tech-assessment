@@ -96,6 +96,16 @@ async function setup() {
     ('Done', 4, 3);
   `);
 
+  await database.exec(`
+    ALTER TABLE boards ADD COLUMN _key_ TEXT;
+    `)
+  await database.exec(`
+    CREATE UNIQUE INDEX idx_boards_key ON boards(_key_);
+  `)
+  await database.exec(`
+    UPDATE boards SET _key_ = id || name;
+  `)
+
   console.log("Database setup complete with default boards and statuses.");
 }
 
