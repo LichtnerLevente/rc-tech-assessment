@@ -12,8 +12,13 @@ async function setup() {
   `);
 
   await database.exec(`
+    DROP TABLE IF EXISTS tickets;
+  `);
+
+  await database.exec(`
     DROP INDEX IF EXISTS idx_statuses_board_id;
   `);
+
 
   await database.exec(`
     CREATE TABLE IF NOT EXISTS boards (
@@ -41,6 +46,18 @@ async function setup() {
   `);
 
   await database.exec(`
+    CREATE TABLE IF NOT EXISTS tickets (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      board_id INTEGER NOT NULL,
+      name TEXT NOT NULL UNIQUE,
+      description TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      deleted_at TIMESTAMP
+    );
+  `);
+
+  await database.exec(`
     CREATE INDEX IF NOT EXISTS idx_statuses_board_id ON statuses(board_id);
   `);
 
@@ -50,6 +67,16 @@ async function setup() {
     ('Beta Project', 'Description for Project Beta'),
     ('Gamma Project', 'Description for Project Gamma'),
     ('Delta Project', 'Description for Project Delta');
+  `);
+
+  await database.exec(`
+    INSERT INTO tickets (name, description, board_id) VALUES
+    ('First task', 'Description for first task', 1),
+    ('Second task', 'Description for second task', 1),
+    ('Third task', 'Description for third task', 2),
+    ('Forth task', 'Description for forth task', 3),
+    ('Fifth task', 'Description for fifth task', 3),
+    ('Sixth task', 'Description for sixth task', 3);
   `);
 
   await database.exec(`
