@@ -48,8 +48,9 @@ async function setup() {
   await database.exec(`
     CREATE TABLE IF NOT EXISTS tickets (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      board_id INTEGER NOT NULL,
       name TEXT NOT NULL UNIQUE,
+      board_id INTEGER NOT NULL,
+      status_id INTEGER,
       description TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -70,13 +71,13 @@ async function setup() {
   `);
 
   await database.exec(`
-    INSERT INTO tickets (name, description, board_id) VALUES
-    ('First task', 'Description for first task', 1),
-    ('Second task', 'Description for second task', 1),
-    ('Third task', 'Description for third task', 2),
-    ('Forth task', 'Description for forth task', 3),
-    ('Fifth task', 'Description for fifth task', 3),
-    ('Sixth task', 'Description for sixth task', 3);
+    INSERT INTO tickets (name, description, board_id, status_id) VALUES
+    ('First task', 'Description for first task', 1, 1),
+    ('Second task', 'Description for second task', 1, 1),
+    ('Third task', 'Description for third task', 2, 4),
+    ('Forth task', 'Description for forth task', 3, 7),
+    ('Fifth task', 'Description for fifth task', 3, 7),
+    ('Sixth task', 'Description for sixth task', 3, 7);
   `);
 
   await database.exec(`
