@@ -4,7 +4,7 @@ import { Status } from "../status.entity";
 
 
 export interface StatusRepository {
-    findAll(): Promise<Status[]>;
+    findAllActive(): Promise<Status[]>;
     findByBoardId(id: string): Promise<Status[]>;
     getById(id: string): Promise<Status>;
     create(status: CreateStatusProperties): Promise<Status>;
