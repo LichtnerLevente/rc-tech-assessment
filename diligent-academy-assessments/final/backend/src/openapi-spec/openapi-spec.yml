@@ -131,3 +131,27 @@ components:
           type: string
       required:
         - name
+    Status:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        board_id:
+          type: integer
+        position:
+          type: integer
+    StatusInput:
+      type: object
+      properties:
+        name:
+          type: string
+        board_id:
+          type: integer
+        position:
+          type: integer
+      required:
+        - name
+        - board_id
+        - position
