@@ -3,7 +3,7 @@ import { StatusName } from "./value-object/status-name";
 
 type StatusDbProperties = {
     id: number;
-    name: StatusName;
+    name: string;
     board_id: number;
     position: number;
     created_at: Date;
@@ -62,7 +62,7 @@ export class Status {
     static fromPersistence(dbProps: StatusDbProperties): Status {
         return new Status({
             id: dbProps.id.toString(),
-            name: dbProps.name,
+            name: new StatusName(dbProps.name),
             board_id: dbProps.board_id.toString(),
             position: dbProps.position.toString(),
             createdAt: dbProps.created_at,

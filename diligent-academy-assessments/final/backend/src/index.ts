@@ -1,11 +1,13 @@
 import Fastify from "fastify";
 import boardRouter from "./application/actions/board/routes";
+import statusRouter from "./application/actions/status/routes";
 import { db } from "./infrastructure/sqlite/db";
 
 const fastify = Fastify({ logger: true });
 
 // register routes
 fastify.register(boardRouter);
+fastify.register(statusRouter);
 
 const start = async () => {
   try {
