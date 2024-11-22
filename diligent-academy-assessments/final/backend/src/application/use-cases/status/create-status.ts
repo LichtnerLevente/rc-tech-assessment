@@ -24,7 +24,6 @@ export class CreatStatus {
           "No record created"
         );
       }
-
       throw error;
     }
   }
