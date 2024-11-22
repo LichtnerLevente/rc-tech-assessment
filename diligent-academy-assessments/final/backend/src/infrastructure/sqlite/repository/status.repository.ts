@@ -94,7 +94,7 @@ export class SqliteStatusRepository implements StatusRepository {
     async delete(id: string): Promise<void> {
         const database = await db;
         const deleted = await database.run(
-            "UPDATE statuses SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?",
+            "UPDATE statuses SET deleted_at = CURRENT_TIMESTAMP WHERE id  = ? AND deleted_at IS NULL",
             [id]
         );
 
