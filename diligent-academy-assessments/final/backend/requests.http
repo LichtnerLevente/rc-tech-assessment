@@ -6,9 +6,24 @@
 GET {{host}}/statuses
 ###
  
-GET {{host}}/statuses/2
+GET {{host}}/statuses/22345
 
+###
 
+POST {{host}}/statuses
+Content-Type: application/json
+
+{
+    "name": "test",
+    "board_id": 2,
+    "position": 4
+}
+
+###
+GET {{host}}/boards/2/statuses
+
+###
+DELETE {{host}}/statuses/13/delete
 ###
 
 GET {{host}}/boards
@@ -16,7 +31,7 @@ GET {{host}}/boards
 
 
 ###
-GET {{host}}/boards/3
+GET {{host}}/boards/
 
 
 
