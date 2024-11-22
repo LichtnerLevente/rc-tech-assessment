@@ -20,8 +20,7 @@ export async function createAction(
 
     const createProperties: CreateStatusProperties = {
       name: new StatusName(body.name),
-      board_id: body.board_id.toString(),
-      position: body.position.toString()
+      board_id: body.board_id.toString()
     };
 
     const useCase = new CreatStatus(new SqliteStatusRepository());

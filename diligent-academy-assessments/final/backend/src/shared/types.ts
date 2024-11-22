@@ -9,5 +9,4 @@ export type CreateBoardProperties = {
 export type CreateStatusProperties = {
   name: StatusName;
   board_id: string;
-  position: string;
 }
