@@ -1,0 +1,52 @@
+
+@host = http://localhost:3000
+
+###
+
+GET {{host}}/boards
+
+###
+ 
+GET {{host}}/statuses
+
+
+###
+GET {{host}}/boards/5
+
+
+
+###
+POST {{host}}/boards
+Content-Type: application/json
+
+{
+    "name": "test",
+    "description": "test description"
+}
+
+
+###
+
+PATCH {{host}}/boards/5
+Content-Type: application/json
+
+{
+    "name": "updated",
+    "description": "test description"
+}
+
+###
+DELETE {{host}}/boards/5/delete 
+
+
+
+
+
+
+
+
+
+
+
+
+
