@@ -19,13 +19,16 @@ export class SqliteStatusRepository implements StatusRepository {
         return statuses.map(Status.fromPersistence);
     }
 
-    async findByBoardId(id: string): Promise<Status[]> {
+    async findByBoardId(board_id: string): Promise<Status[]> {
 
         const database = await db;
-        const statuses = await database.get(
-            "SELECT * FROM statuses WHERE statuses.board_id = ? AND statuses.deleted_at IS NULL", [id]);
+        const statuses = await database.all(
+            "SELECT * FROM statuses WHERE statuses.board_id = ?  AND statuses.deleted_at IS NULL", [board_id]);
 
-        // todo: error check for no results (wrong board id)
+        if(statuses.length === 0){
+            throw new NoRecordFound(board_id)
+        }
+        // todo: error check for no results (wrong board id vs no status for a board)
 
         return statuses.map(Status.fromPersistence);
     }
@@ -45,8 +48,8 @@ export class SqliteStatusRepository implements StatusRepository {
         const database = await db;
         try {
             const created = await database.get(
-                "Insert Into statuses (name, board_id, position) VALUES (?, ?) RETURNING *",
-                [properties.name.getValue(), properties.board_id, properties.position]
+                "Insert Into statuses (name, board_id, position) VALUES (?, ?, ?) RETURNING *",
+                [properties.name.getValue(), Number(properties.board_id), Number(properties.position)]
             );
 
             if (created.changes === 0) {
