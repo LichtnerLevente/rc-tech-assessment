@@ -6,7 +6,8 @@
 GET {{host}}/statuses
 ###
  
-GET {{host}}/statuses/1
+GET {{host}}/statuses/2
+
 
 ###
 
@@ -15,7 +16,7 @@ GET {{host}}/boards
 
 
 ###
-GET {{host}}/boards/5
+GET {{host}}/boards/3
 
 
 
