@@ -47,9 +47,11 @@ export class SqliteStatusRepository implements StatusRepository {
     async create(properties: CreateStatusProperties): Promise<Status> {
         const database = await db;
         try {
+            const nextPosition = await this.getLastPosition(properties.board_id) + 1; 
+
             const created = await database.get(
-                "Insert Into statuses (name, board_id, position) VALUES (?, ?, ?) RETURNING *",
-                [properties.name.getValue(), Number(properties.board_id), Number(properties.position)]
+                "INSERT INTO statuses (name, board_id, position) VALUES (?, ?, ?) RETURNING *",
+                [properties.name.getValue(), Number(properties.board_id), nextPosition]
             );
 
             if (created.changes === 0) {
@@ -64,6 +66,20 @@ export class SqliteStatusRepository implements StatusRepository {
 
             throw error;
         }
+    }
+    async getLastPosition(board_id: string): Promise<number>{
+        const database = await db;
+        try {
+            
+            const last = await database.get(
+                "SELECT position FROM statuses WHERE board_id = ? AND deleted_at IS NULL ORDER BY position DESC LIMIT 1",
+                [Number(board_id)]);
+                
+                return last.position;
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
     }
 
     async update(status: Status): Promise<Status> {
