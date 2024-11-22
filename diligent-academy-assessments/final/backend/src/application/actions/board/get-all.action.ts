@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { SqliteBoardRepository } from "../../../infrastructure/sqlite/repository/board.repository";
 import { Board } from "../../../domain/board.entity";
-import { GetBoards } from "../../use-cases/get-boards";
+import { GetBoards } from "../../use-cases/board/get-boards";
 
 export async function getAllAction(
   req: FastifyRequest,
