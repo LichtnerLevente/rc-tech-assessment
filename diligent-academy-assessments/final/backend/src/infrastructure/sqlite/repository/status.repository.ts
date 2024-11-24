@@ -1,6 +1,6 @@
 import { StatusRepository } from "../../../domain/repository/status.repository";
 import { Status } from "../../../domain/status.entity";
-import { CreateStatusProperties } from "../../../shared/types";
+import { CreateStatusProperties, UpdateStatusPropertires } from "../../../shared/types";
 import { NoRecordCreated } from "../../error/no-record-created.error";
 import { NoRecordFound } from "../../error/no-record-found";
 import { NoRecordUpdated } from "../../error/no-record-updated.error";
@@ -82,19 +82,18 @@ export class SqliteStatusRepository implements StatusRepository {
             }
     }
 
-    async update(status: Status): Promise<Status> {
+    async update(status: UpdateStatusPropertires): Promise<Status> {
         const database = await db;
 
         try {
           const updated = await database.get(
-            "UPDATE statuses SET name = ?, board_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? RETURNING *",
-            [status.name.getValue(), status.board_id, status.id]
+            "UPDATE statuses SET name = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? RETURNING *", // should a soft deleted item be updateable?
+            [status.name.getValue(), status.id]
           );
     
           if (updated.changes === 0) {
             throw new NoRecordUpdated(status.id);
           }
-    
           return Status.fromPersistence(updated);
         } catch (error) {
           if ((error as { code: string })?.code === "SQLITE_CONSTRAINT") {

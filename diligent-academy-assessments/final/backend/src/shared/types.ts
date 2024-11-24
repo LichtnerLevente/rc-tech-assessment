@@ -9,4 +9,9 @@ export type CreateBoardProperties = {
 export type CreateStatusProperties = {
   name: StatusName;
   board_id: string;
-}
+};
+
+export type UpdateStatusPropertires = {
+  id: string;
+  name: StatusName;
+};
