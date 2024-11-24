@@ -6,7 +6,7 @@
 GET {{host}}/statuses
 ###
  
-GET {{host}}/statuses/22345
+GET {{host}}/statuses/20
 
 ###
 
@@ -14,34 +14,42 @@ POST {{host}}/statuses
 Content-Type: application/json
 
 {
-    "name": "test",
-    "board_id": 2,
-    "position": 4
+    "name": "test7",
+    "board_id": 1
 }
 
 ###
 GET {{host}}/boards/2/statuses
 
 ###
-DELETE {{host}}/statuses/13/delete
+PATCH {{host}}/statuses/20
+Content-Type: application/json
+
+{
+    "name": "updated again",
+    "test": "test"
+}
+
+###
+
+DELETE {{host}}/statuses/16/delete
+
 ###
 
 GET {{host}}/boards
 
-
-
 ###
-GET {{host}}/boards/
+GET {{host}}/boards/2
 
 
 
 ###
-POST {{host}}/boards
+PATCH {{host}}/boards/2134
 Content-Type: application/json
 
 {
-    "name": "test",
-    "description": "test description"
+    "name": "Project Beta",
+    "description": "Description for Project Beta"
 }
 
 
