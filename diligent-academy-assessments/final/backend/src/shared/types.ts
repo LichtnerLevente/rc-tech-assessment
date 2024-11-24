@@ -15,3 +15,8 @@ export type UpdateStatusPropertires = {
   id: string;
   name: StatusName;
 };
+
+export type UpdateStatusPositionProperties = {
+  id: string;
+  position: string;
+}

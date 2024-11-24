@@ -21,6 +21,10 @@ Content-Type: application/json
 ###
 GET {{host}}/boards/2/statuses
 
+
+###
+
+PATCH {{host}}/boards/2/statuses/positions
 ###
 PATCH {{host}}/statuses/20
 Content-Type: application/json
