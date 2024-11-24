@@ -1,6 +1,6 @@
 import { StatusRepository } from "../../../domain/repository/status.repository";
 import { Status } from "../../../domain/status.entity";
-import { CreateStatusProperties, UpdateStatusPositionProperties, UpdateStatusPropertires } from "../../../shared/types";
+import { CreateStatusProperties, UpdateStatusPositionsProperties, UpdateStatusPropertires } from "../../../shared/types";
 import { NoRecordCreated } from "../../error/no-record-created.error";
 import { NoRecordFound } from "../../error/no-record-found";
 import { NoRecordUpdated } from "../../error/no-record-updated.error";
@@ -57,7 +57,6 @@ export class SqliteStatusRepository implements StatusRepository {
       if (created.changes === 0) {
         throw new NoRecordCreated();
       }
-
       return Status.fromPersistence(created);
     } catch (error) {
       if ((error as { code: string })?.code === "SQLITE_CONSTRAINT") {
@@ -77,7 +76,6 @@ export class SqliteStatusRepository implements StatusRepository {
 
       return last.position;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -104,9 +102,21 @@ export class SqliteStatusRepository implements StatusRepository {
     }
   }
 
-  // TODO: update position
-  updatePositionsByBoardId(positions: UpdateStatusPositionProperties[]): Promise<Status[]> {
-    throw new Error("Method not implemented.");
+  async updatePositionsByBoardId(updateProperties: UpdateStatusPositionsProperties): Promise<Status[]> {
+    const database = await db;
+    const caseString: string = updateProperties.positions.map(s => `WHEN ${s.id} THEN ${s.position}`).join('\n');
+    const query = 
+    `UPDATE statuses 
+    SET
+    position = CASE id
+    ${caseString}
+    END
+    WHERE board_id = ? AND deleted_at IS NULL
+     RETURNING *`
+
+    const updated = await database.all(query, [updateProperties.board_id]);
+    //todo error handling
+    return updated.map(Status.fromPersistence);
   }
 
   async delete(id: string): Promise<void> {
