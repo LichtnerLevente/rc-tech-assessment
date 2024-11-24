@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-
+    //same schema is used for getById and delete
 export const byIdSchema = z.object({
   id: z.string().min(1),
 });
@@ -12,6 +12,14 @@ export const createSchema = z.object({
    }),
 });
 
+export const updateSchema = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    name: z.string().min(1)
+  })
+});
 
 
 
