@@ -16,7 +16,7 @@ export type UpdateStatusPropertires = {
   name: StatusName;
 };
 
-export type UpdateStatusPositionProperties = {
-  id: string;
-  position: string;
+export type UpdateStatusPositionsProperties = {
+  board_id: string;
+  positions: {id: number; position: number;}[]
 }

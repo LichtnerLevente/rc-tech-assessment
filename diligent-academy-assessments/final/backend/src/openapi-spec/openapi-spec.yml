@@ -126,13 +126,13 @@ paths:
                   $ref: "#/components/schemas/Status"
         "500":
           description: Internal server error
-  /boards/{id}/statuses/positions:
+  /boards/{board_id}/statuses/positions:
     patch:
       summary: Update positions for statuses under a board
-      operationId: updateStatusesByBoardId
+      operationId: updateStatusPositionsByBoardId
       parameters:
         - in: path
-          name: id
+          name: board_id
           required: true
           schema:
             type: integer
@@ -305,7 +305,7 @@ components:
       required:
         - name
     StatusPosition:
-      type: array
+      type: object
       properties:
         id: 
           type: integer

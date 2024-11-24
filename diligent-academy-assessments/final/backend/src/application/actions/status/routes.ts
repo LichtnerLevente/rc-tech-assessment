@@ -10,7 +10,7 @@ import { updatePositionsAction } from "./update-positions-by-board_id.action";
 
 export default async function (fastify: FastifyInstance) {
     fastify.get("/boards/:id/statuses", GetByBoardIdAction);
-    fastify.patch("/boards/:id/statuses/positions", updatePositionsAction);
+    fastify.patch("/boards/:board_id/statuses/positions", updatePositionsAction);
     fastify.get("/statuses", getAllAction);
     fastify.post("/statuses", createAction);
     fastify.get("/statuses/:id", getAction);

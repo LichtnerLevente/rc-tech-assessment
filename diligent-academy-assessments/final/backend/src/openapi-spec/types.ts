@@ -74,7 +74,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/boards/{id}/statuses/positions": {
+    "/boards/{board_id}/statuses/positions": {
         parameters: {
             query?: never;
             header?: never;
@@ -88,7 +88,7 @@ export interface paths {
         options?: never;
         head?: never;
         /** Update positions for statuses under a board */
-        patch: operations["updateStatusesByBoardId"];
+        patch: operations["updateStatusPositionsByBoardId"];
         trace?: never;
     };
     "/statuses": {
@@ -167,7 +167,10 @@ export interface components {
             name: string;
             board_id?: number;
         };
-        StatusPosition: unknown[];
+        StatusPosition: {
+            id: number;
+            position: number;
+        };
     };
     responses: never;
     parameters: never;
@@ -400,12 +403,12 @@ export interface operations {
             };
         };
     };
-    updateStatusesByBoardId: {
+    updateStatusPositionsByBoardId: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                board_id: number;
             };
             cookie?: never;
         };

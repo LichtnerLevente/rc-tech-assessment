@@ -1,4 +1,4 @@
-import { CreateStatusProperties, UpdateStatusPositionProperties, UpdateStatusPropertires } from "../../shared/types";
+import { CreateStatusProperties, UpdateStatusPositionsProperties, UpdateStatusPropertires } from "../../shared/types";
 import { Status } from "../status.entity";
 
 
@@ -9,7 +9,7 @@ export interface StatusRepository {
     getById(id: string): Promise<Status>;
     create(status: CreateStatusProperties): Promise<Status>;
     update(status: UpdateStatusPropertires): Promise<Status>;
-    updatePositionsByBoardId(positions: UpdateStatusPositionProperties[]): Promise<Status[]>;
+    updatePositionsByBoardId(positions: UpdateStatusPositionsProperties): Promise<Status[]>;
     delete(id: string): Promise<void>;
 }
 
