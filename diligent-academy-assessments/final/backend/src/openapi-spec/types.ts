@@ -74,6 +74,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/boards/{id}/statuses/positions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update positions for statuses under a board */
+        patch: operations["updateStatusesByBoardId"];
+        trace?: never;
+    };
     "/statuses": {
         parameters: {
             query?: never;
@@ -148,9 +165,9 @@ export interface components {
         };
         StatusInput: {
             name: string;
-            board_id: number;
-            position: number;
+            board_id?: number;
         };
+        StatusPosition: unknown[];
     };
     responses: never;
     parameters: never;
@@ -373,6 +390,53 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Status"][];
                 };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    updateStatusesByBoardId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StatusPosition"][];
+            };
+        };
+        responses: {
+            /** @description The updated positions */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatusPosition"][];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Board not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Internal server error */
             500: {

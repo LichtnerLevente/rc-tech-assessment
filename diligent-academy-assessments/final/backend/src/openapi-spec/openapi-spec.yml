@@ -126,6 +126,39 @@ paths:
                   $ref: "#/components/schemas/Status"
         "500":
           description: Internal server error
+  /boards/{id}/statuses/positions:
+    patch:
+      summary: Update positions for statuses under a board
+      operationId: updateStatusesByBoardId
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/StatusPosition"
+      responses:
+        "200":
+          description: The updated positions
+          content:
+           application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StatusPosition"
+        "400":
+          description: Bad request
+        "404":
+          description: Board not found
+        "500":
+          description: Internal server error
   /statuses:
     get:
       summary: Get all statuses
@@ -269,9 +302,15 @@ components:
           type: string
         board_id:
           type: integer
-        position:
-          type: integer
       required:
         - name
-        - board_id
+    StatusPosition:
+      type: array
+      properties:
+        id: 
+          type: integer
+        position: 
+          type: integer
+      required:
+        - id
         - position
