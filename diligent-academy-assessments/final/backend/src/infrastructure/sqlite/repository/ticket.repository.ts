@@ -9,6 +9,7 @@ import { db } from "../db";
 
 
 export class SqliteTicketRepository implements TicketRepository {
+
   async findAllActive(): Promise<Ticket[]> {
     const database = await db;
     const tickets = await database.all("SELECT * FROM tickets WHERE deleted_at IS NULL");
@@ -59,7 +60,6 @@ export class SqliteTicketRepository implements TicketRepository {
 
     return Ticket.fromPersistence(ticket);
   }
-
   async updateById(ticket: Ticket): Promise<Ticket> {
     const database = await db;
 
@@ -83,4 +83,15 @@ export class SqliteTicketRepository implements TicketRepository {
     }
 
   }
+  async deleteById(id: string): Promise<void> {
+    const database = await db;
+    const deleted = await database.run(
+      "UPDATE tickets SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [id]
+    );
+
+    if (deleted.changes === 0) {
+      throw new NoRecordUpdated(id);
+    }
+  }  
 }

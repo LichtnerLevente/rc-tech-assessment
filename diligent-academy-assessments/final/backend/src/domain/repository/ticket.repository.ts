@@ -9,4 +9,5 @@ export interface TicketRepository {
   create(status: CreateTicketProperties): Promise<Ticket>;
   getById(id: string): Promise<Ticket>;
   updateById(status: Ticket): Promise<Ticket>;
+  deleteById(id: string):Promise<void>;
 }
