@@ -7,7 +7,7 @@ export class DeleteTicket {
 
   async onRequest(id: string): Promise<void> {
     try {
-      await this.repo.deleteById(id);
+      await this.repo.delete(id);
     } catch (error) {
       if (error instanceof NoRecordUpdated) {
         throw new BadRequestError(id, "No record deleted");

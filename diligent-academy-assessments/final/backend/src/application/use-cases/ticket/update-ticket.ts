@@ -7,9 +7,9 @@ export class UpdateTicket {
 
   async onRequest(ticket: Ticket): Promise<Ticket> {
     try {
-      return await this.repo.updateById(ticket);
+      return await this.repo.update(ticket);
     } catch (error) {
-      throw new BadRequestError(ticket.id, "Board not found");
+      throw new BadRequestError(ticket.id, "Ticket not found");
     }
   }
 }
