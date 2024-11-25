@@ -27,9 +27,10 @@ async function setup() {
       description TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      deleted_at TIMESTAMP
+      deleted_at TIMESTAMP,
+      _key_ TEXT UNIQUE NOT NULL
     );
-  `);
+  `); //todo: add constraint for _key_
 
   await database.exec(`
     CREATE TABLE IF NOT EXISTS statuses (
@@ -43,21 +44,21 @@ async function setup() {
       FOREIGN KEY (board_id) REFERENCES boards(id),
       UNIQUE (name, board_id)
     ); 
-  `);  //shouldnt allow multyple non deleted statuses with the same position for within a board
+  `);
 
   await database.exec(`
     CREATE TABLE IF NOT EXISTS tickets (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
       board_id INTEGER NOT NULL,
-      status_id INTEGER NOT NULL,
+      status_id INTEGER,
       description TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       deleted_at TIMESTAMP,
       FOREIGN KEY (board_id) REFERENCES boards(id),
       FOREIGN KEY (status_id) REFERENCES statuses(id)
-      UNIQUE (id, status_id)
+      UNIQUE (name, status_id)
     );
   `);
 
@@ -66,11 +67,11 @@ async function setup() {
   `);
 
   await database.exec(`
-    INSERT INTO boards (name, description) VALUES
-    ('Alpha Project', 'Description for Project Alpha'),
-    ('Beta Project', 'Description for Project Beta'),
-    ('Gamma Project', 'Description for Project Gamma'),
-    ('Delta Project', 'Description for Project Delta');
+    INSERT INTO boards (name, description, _KEY_) VALUES
+    ('Alpha Project', 'Description for Project Alpha', 'AASD'),
+    ('Beta Project', 'Description for Project Beta', 'BASD'),
+    ('Gamma Project', 'Description for Project Gamma', 'CASD'),
+    ('Delta Project', 'Description for Project Delta', 'DASD');
   `);
 
   await database.exec(`
@@ -99,16 +100,10 @@ async function setup() {
     ('Done', 4, 3);
   `);
 
-  await database.exec(`
-    ALTER TABLE boards ADD COLUMN _key_ TEXT;
-    `)
+
   await database.exec(`
     CREATE UNIQUE INDEX idx_boards_key ON boards(_key_);
   `)
-  await database.exec(`
-    UPDATE boards SET _key_ = id || name;
-  `)
-
   console.log("Database setup complete with default boards and statuses.");
 }
 

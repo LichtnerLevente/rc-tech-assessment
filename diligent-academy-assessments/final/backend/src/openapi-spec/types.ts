@@ -243,6 +243,7 @@ export interface components {
         BoardInput: {
             name: string;
             description?: string;
+            _key_: string;
         };
         Status: {
             id?: number;

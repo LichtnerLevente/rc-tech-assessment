@@ -182,7 +182,6 @@ paths:
           description: Board not found
         "500":
           description: Internal server error
-
   /statuses:
     get:
       summary: Get all statuses
@@ -434,8 +433,11 @@ components:
           type: string
         description:
           type: string
+        _key_:
+          type: string
       required:
         - name
+        - _key_
     Status:
       type: object
       properties:
