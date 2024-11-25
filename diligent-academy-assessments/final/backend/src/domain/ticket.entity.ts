@@ -13,7 +13,7 @@ type TicketProperties = {
 
 type TicketDbProperties = {
   id: string;
-  name: TicketName;
+  name: string;
   description?: string;
   board_id: number;
   status_id: number;
@@ -76,7 +76,7 @@ export class Ticket {
   static fromPersistence(dbProps: TicketDbProperties): Ticket {
     return new Ticket({
       id: dbProps.id,
-      name: dbProps.name,
+      name: new TicketName(dbProps.name),
       description: dbProps.description,
       board_id: dbProps.board_id.toString(),
       status_id: dbProps.status_id.toString(),

@@ -3,7 +3,7 @@ import { Ticket } from "../ticket.entity";
 
 
 export interface TicketRepository {
-  findAll(): Promise<Ticket[]>;
+  findAllActive(): Promise<Ticket[]>;
   findAllByBoardId(board_id: string): Promise<Ticket[]>;
   findAllByStatusId(status_id: string): Promise<Ticket[]>;
   create(status: CreateTicketProperties): Promise<Ticket>;
