@@ -7,6 +7,7 @@ import { BadRequestError } from "../../../domain/error/bad-request.error";
 import { z } from "zod";
 import { operations } from "../../../openapi-spec/types";
 import { BoardName } from "../../../domain/value-object/board-name";
+import { BoardKey } from "../../../domain/value-object/board-key";
 
 type RequestParams = operations["updateBoard"]["parameters"]["path"]["id"];
 type RequestBody =
@@ -27,6 +28,7 @@ export async function updateAction(
       id: params.id,
       name: new BoardName(body.name),
       description: body.description,
+      _key_: new BoardKey("_KEY")
     });
 
     const useCase = new UpdateBoard(new SqliteBoardRepository());

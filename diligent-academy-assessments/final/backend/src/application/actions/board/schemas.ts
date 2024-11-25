@@ -15,9 +15,11 @@ export const updateSchema = z.object({
   }),
 });
 
+
 export const createSchema = z.object({
   body: z.object({
     name: z.string().min(1),
     description: z.string().min(1),
+    _key_: z.string().length(4).toUpperCase()
   }),
 });

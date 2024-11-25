@@ -1,3 +1,4 @@
+import { BoardKey } from "../domain/value-object/board-key";
 import { BoardName } from "../domain/value-object/board-name";
 import { StatusName } from "../domain/value-object/status-name";
 import { TicketName } from "../domain/value-object/ticket-name";
@@ -5,6 +6,7 @@ import { TicketName } from "../domain/value-object/ticket-name";
 export type CreateBoardProperties = {
   name: BoardName;
   description?: string;
+  key: BoardKey;
 };
 
 export type CreateStatusProperties = {

@@ -32,8 +32,8 @@ export class SqliteBoardRepository implements BoardRepository {
     const database = await db;
     try {
       const created = await database.get(
-        "INSERT INTO boards (name, description) VALUES (?, ?) RETURNING *",
-        [properties.name.getValue(), properties.description]
+        "INSERT INTO boards (name, description, _key_) VALUES (?, ?, ?) RETURNING *",
+        [properties.name.getValue(), properties.description, properties.key.getValue()]
       );
 
       if (created.changes === 0) {
@@ -43,6 +43,7 @@ export class SqliteBoardRepository implements BoardRepository {
       return Board.fromPersistence(created);
     } catch (error) {
       if ((error as { code: string })?.code === "SQLITE_CONSTRAINT") {
+        console.error(error)
         throw new RecordNameInvalid(properties.name.getValue());
       }
 
@@ -66,6 +67,7 @@ export class SqliteBoardRepository implements BoardRepository {
       return Board.fromPersistence(updated);
     } catch (error) {
       if ((error as { code: string })?.code === "SQLITE_CONSTRAINT") {
+        
         throw new RecordNameInvalid(board.name.getValue());
       }
 

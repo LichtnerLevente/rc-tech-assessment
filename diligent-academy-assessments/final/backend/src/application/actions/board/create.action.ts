@@ -7,6 +7,7 @@ import { createSchema } from "./schemas";
 import { operations } from "../../../openapi-spec/types";
 import { CreateBoardProperties } from "../../../shared/types";
 import { BoardName } from "../../../domain/value-object/board-name";
+import { BoardKey } from "../../../domain/value-object/board-key";
 
 type RequestBody =
   operations["createBoard"]["requestBody"]["content"]["application/json"];
@@ -21,6 +22,7 @@ export async function createAction(
     const createProperties: CreateBoardProperties = {
       name: new BoardName(body.name),
       description: body.description,
+      key: new BoardKey(body._key_),
     };
 
     const useCase = new CreateBoard(new SqliteBoardRepository());
