@@ -1,0 +1,102 @@
+
+@host = http://localhost:3000
+
+###
+ 
+GET {{host}}/statuses
+###
+ 
+GET {{host}}/statuses/15
+
+###
+
+POST {{host}}/statuses
+Content-Type: application/json
+
+{
+    "name": "test7",
+    "board_id": 1
+}
+
+###
+GET {{host}}/boards/2/statuses
+
+
+###
+
+PATCH {{host}}/boards/2/statuses/positions
+Content-Type: application/json
+
+[
+    {
+        "id": 4,
+        "position": 3
+    },
+    {
+        "id": 5,
+        "position": 2
+    },
+        {
+        "id": 6,
+        "position": 1
+    }
+]
+
+
+###
+PATCH {{host}}/statuses/20
+Content-Type: application/json
+
+{
+    "name": "updated again",
+    "test": "test"
+}
+
+###
+
+DELETE {{host}}/statuses/16/delete
+
+###
+
+GET {{host}}/boards
+
+###
+GET {{host}}/boards/2
+
+
+
+###
+PATCH {{host}}/boards/2134
+Content-Type: application/json
+
+{
+    "name": "Project Beta",
+    "description": "Description for Project Beta"
+}
+
+
+###
+
+PATCH {{host}}/boards/5
+Content-Type: application/json
+
+{
+    "name": "updated",
+    "description": "test description"
+}
+
+###
+DELETE {{host}}/boards/5/delete 
+
+
+
+
+
+
+
+
+
+
+
+
+

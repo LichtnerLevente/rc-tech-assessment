@@ -1,7 +1,7 @@
-import { Board } from "../../domain/board.entity";
-import { BadRequestError } from "../../domain/error/bad-request.error";
-import { BoardRepository } from "../../domain/repository/board.repository";
-import { NoRecordFound } from "../../infrastructure/error/no-record-found";
+import { Board } from "../../../domain/board.entity";
+import { BadRequestError } from "../../../domain/error/bad-request.error";
+import { BoardRepository } from "../../../domain/repository/board.repository";
+import { NoRecordFound } from "../../../infrastructure/error/no-record-found";
 
 export class GetBoardById {
   constructor(readonly boardRepository: BoardRepository) {}

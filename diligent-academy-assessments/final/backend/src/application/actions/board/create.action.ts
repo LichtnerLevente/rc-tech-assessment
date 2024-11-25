@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { BadRequestError } from "../../../domain/error/bad-request.error";
 import { z } from "zod";
-import { CreateBoard } from "../../use-cases/create-board";
+import { CreateBoard } from "../../use-cases/board/create-board";
 import { SqliteBoardRepository } from "../../../infrastructure/sqlite/repository/board.repository";
 import { createSchema } from "./schemas";
 import { operations } from "../../../openapi-spec/types";
