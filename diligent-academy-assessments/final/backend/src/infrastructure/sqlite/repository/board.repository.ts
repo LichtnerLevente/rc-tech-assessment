@@ -44,11 +44,10 @@ export class SqliteBoardRepository implements BoardRepository {
       return Board.fromPersistence(created);
     } catch (error) {
       if ((error as { code: string })?.code === "SQLITE_CONSTRAINT") {
-
         if ((error as { message: string })?.message.includes("name")){
           throw new RecordNameInvalid(properties.name.getValue());
         } else if ((error as { message: string })?.message.includes("key")){
-          throw new RecordKeyInvalid(properties.name.getValue());
+          throw new RecordKeyInvalid(properties.key.getValue());
         } else {
           throw new NoRecordCreated();
         }

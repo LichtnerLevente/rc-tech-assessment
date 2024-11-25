@@ -20,7 +20,7 @@ export class CreateBoard {
         );
       } else if (error instanceof RecordKeyInvalid) {
         throw new BadRequestError(
-          properties.name.getValue(),
+          properties.key.getValue(),
           "Record key invalid"
         );
       } else if (error instanceof NoRecordCreated) {
