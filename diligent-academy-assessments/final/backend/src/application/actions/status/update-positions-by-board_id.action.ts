@@ -7,6 +7,7 @@ import { Status } from "../../../domain/status.entity";
 import { UpdateStatusPositionsProperties } from "../../../shared/types";
 import { updateStatusPositionsByBoardId } from "../../use-cases/status/update-status-positions-by-board_id";
 import { SqliteStatusRepository } from "../../../infrastructure/sqlite/repository/status.repository";
+import { UnsuccessfulQuerry } from "../../../infrastructure/error/unsuccessful-query.error";
 
 
 type RequestParams = operations["updateStatusPositionsByBoardId"]["parameters"]["path"]["board_id"];
@@ -36,6 +37,8 @@ export async function updatePositionsAction(
       res
         .status(400)
         .send({ error: "Invalid parameters", details: error.errors });
+    } else if(error instanceof UnsuccessfulQuerry) {
+      res.status(400).send({error: "Invalid parameters"});
     } else if (error instanceof BadRequestError) {
       res.status(404).send({ error: "Not found" });
     } else {

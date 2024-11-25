@@ -42,8 +42,8 @@ async function setup() {
       deleted_at TIMESTAMP,
       FOREIGN KEY (board_id) REFERENCES boards(id),
       UNIQUE (name, board_id)
-    );
-  `);
+    ); 
+  `);  //shouldnt allow multyple non deleted statuses with the same position for within a board
 
   await database.exec(`
     CREATE TABLE IF NOT EXISTS tickets (

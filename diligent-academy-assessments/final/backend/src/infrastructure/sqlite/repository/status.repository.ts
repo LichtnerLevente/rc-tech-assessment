@@ -5,6 +5,7 @@ import { NoRecordCreated } from "../../error/no-record-created.error";
 import { NoRecordFound } from "../../error/no-record-found";
 import { NoRecordUpdated } from "../../error/no-record-updated.error";
 import { RecordNameInvalid } from "../../error/record-name-invalid.error";
+import { UnsuccessfulQuerry } from "../../error/unsuccessful-query.error";
 import { db } from "../db";
 
 
@@ -47,7 +48,7 @@ export class SqliteStatusRepository implements StatusRepository {
   async create(properties: CreateStatusProperties): Promise<Status> {
     const database = await db;
     try {
-      const nextPosition = await this.getLastPosition(properties.board_id) + 1;
+      const nextPosition = await this.getLastPosition(properties.board_id) + 1; //todo: find a better solution for thhis
 
       const created = await database.get(
         "INSERT INTO statuses (name, board_id, position) VALUES (?, ?, ?) RETURNING *",
@@ -102,9 +103,9 @@ export class SqliteStatusRepository implements StatusRepository {
     }
   }
 
-  async updatePositionsByBoardId(updateProperties: UpdateStatusPositionsProperties): Promise<Status[]> {
+  async updatePositionsByBoardId(properties: UpdateStatusPositionsProperties): Promise<Status[]> {
     const database = await db;
-    const caseString: string = updateProperties.positions.map(s => `WHEN ${s.id} THEN ${s.position}`).join('\n');
+    const caseString: string = properties.positions.map(s => `WHEN ${s.id} THEN ${s.position}`).join('\n');
     const query = 
     `UPDATE statuses 
     SET
@@ -112,11 +113,22 @@ export class SqliteStatusRepository implements StatusRepository {
     ${caseString}
     END
     WHERE board_id = ? AND deleted_at IS NULL
-     RETURNING *`
+    RETURNING *`;
 
-    const updated = await database.all(query, [updateProperties.board_id]);
-    //todo error handling
-    return updated.map(Status.fromPersistence);
+    try {  
+      const updated = await database.all(query, [properties.board_id]);
+
+      if(updated.length === 0){
+        throw new NoRecordFound(properties.board_id);
+      }
+
+      return updated.map(Status.fromPersistence);
+    } catch (error) { //needs better error handling
+      if((error as { message: string })?.message) {
+        throw new UnsuccessfulQuerry((error as { message: string })?.message);
+      }
+      throw error;
+    }
   }
 
   async delete(id: string): Promise<void> {
