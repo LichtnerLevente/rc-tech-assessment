@@ -13,10 +13,26 @@ export class SqliteTicketRepository implements TicketRepository {
     return tickets.map(Ticket.fromPersistence);
   }
   async findAllByBoardId(board_id: string): Promise<Ticket[]> {
-    throw new Error("Method not implemented.");
+    const database = await db;
+    const tickets = await database.all(
+      "SELECT * FROM tickets WHERE tickets.board_id = ?  AND tickets.deleted_at IS NULL", [board_id]);
+
+    if (tickets.length === 0) {
+      throw new NoRecordFound(board_id)
+    }
+
+    return tickets.map(Ticket.fromPersistence);
   }
   async findAllByStatusId(status_id: string): Promise<Ticket[]> {
-    throw new Error("Method not implemented.");
+    const database = await db;
+    const tickets = await database.all(
+      "SELECT * FROM tickets WHERE tickets.status_id = ?  AND tickets.deleted_at IS NULL", [status_id]);
+
+    if (tickets.length === 0) {
+      throw new NoRecordFound(status_id)
+    }
+
+    return tickets.map(Ticket.fromPersistence);
   }
   async create(status: CreateTicketProperties): Promise<Ticket> {
     throw new Error("Method not implemented.");
