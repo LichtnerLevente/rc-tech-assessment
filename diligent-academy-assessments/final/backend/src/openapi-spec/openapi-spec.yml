@@ -159,6 +159,30 @@ paths:
           description: Board not found
         "500":
           description: Internal server error
+  /boards/{board_id}/tickets:
+    get:
+      summary: Get all tickets for a board
+      operationId: getTicketsByBoardId
+      parameters:
+        - in: path
+          name: board_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of tickets for a board
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ticket"
+        "404":
+          description: Board not found
+        "500":
+          description: Internal server error
+
   /statuses:
     get:
       summary: Get all statuses
@@ -264,6 +288,134 @@ paths:
           description: Status not found
         "500":
           description: Internal server error
+  /statuses/{status_id}/tickets:
+    get:
+      summary: Get all tickets for a status
+      operationId: getTicketsByStatusId
+      parameters:
+        - in: path
+          name: status_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of tickets for a status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ticket"
+        "404":
+          description: Board not found
+        "500":
+          description: Internal server error
+  /tickets:
+    get:
+      summary: Get all tickets
+      operationId: getTickets
+      responses:
+        "200":
+          description: A list of tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ticket"
+        "500":
+          description: Internal server error
+    post:
+      summary: Create a new tickets
+      operationId: createTicket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TicketInput"
+      responses:
+        "201":
+          description: The created ticket
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ticket"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+  /tickets/{id}:
+    get:
+      summary: Get a ticket by ID
+      operationId: getTicketById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The requested ticket
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ticket"
+        "400":
+          description: Bad request
+        "404":
+          description: Ticket not found
+        "500":
+          description: Internal server error
+    patch:
+      summary: Update ticket by ID
+      operationId: updateTicket
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TicketInput"
+      responses:
+        "200":
+          description: The updated ticket
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ticket"
+        "400":
+          description: Bad request
+        "404":
+          description: Ticket not found
+        "500":
+          description: Internal server error
+  /tickets/{id}/delete:
+    delete:
+      summary: Soft delete a ticket by ID
+      operationId: deleteTicket
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Ticket soft deleted
+        "400":
+          description: Bad request
+        "404":
+          description: Ticket not found
+        "500":
+          description: Internal server error
 components:
   schemas:
     Board:
@@ -314,3 +466,30 @@ components:
       required:
         - id
         - position
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        board_id:
+          type: number
+        status_id:
+          type: number
+    TicketInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        board_id:
+          type: number
+        status_id:
+          type: number
+      required:
+        - name
+        - board_id

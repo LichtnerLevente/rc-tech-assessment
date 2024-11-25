@@ -1,21 +1,22 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { byIdSchema } from "./schemas";
-import { DeleteBoard } from "../../use-cases/board/delete-board";
-import { SqliteBoardRepository } from "../../../infrastructure/sqlite/repository/board.repository";
 import { z } from "zod";
 import { BadRequestError } from "../../../domain/error/bad-request.error";
+import { byIdSchema } from "./schemas";
+import { operations } from "../../../openapi-spec/types";
+import { getTicketById } from "../../use-cases/ticket/get-ticket-by-id";
+import { SqliteTicketRepository } from "../../../infrastructure/sqlite/repository/ticket.repository";
 
-export async function deleteAction(
+export async function getAction(
   req: FastifyRequest,
   res: FastifyReply
 ): Promise<void> {
   try {
     const { id } = byIdSchema.parse(req.params);
 
-    const useCase = new DeleteBoard(new SqliteBoardRepository());
-    await useCase.onRequest(id);
+    const useCase = new getTicketById(new SqliteTicketRepository());
+    const ticket = await useCase.onRequest(id);
 
-    return res.status(204).send();
+    return res.status(200).send(ticket.toView());
   } catch (error) {
     if (error instanceof z.ZodError) {
       res
