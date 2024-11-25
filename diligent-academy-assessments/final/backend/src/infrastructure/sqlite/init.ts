@@ -28,9 +28,9 @@ async function setup() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       deleted_at TIMESTAMP,
-      _key_ TEXT UNIQUE NOT NULL
+      _key_ TEXT UNIQUE NOT NULL CHECK(length(_key_) = 4 AND _key_ = upper(_key_))
     );
-  `); //todo: add constraint for _key_
+  `);
 
   await database.exec(`
     CREATE TABLE IF NOT EXISTS statuses (
