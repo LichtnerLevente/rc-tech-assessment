@@ -38,6 +38,7 @@ export async function createAction(
     } else if (error instanceof BadRequestError) {
       res.status(400).send({ error: error.message });
     } else {
+      console.error(error)
       res.status(500).send({ error: "Internal server error :(" });
     }
   }

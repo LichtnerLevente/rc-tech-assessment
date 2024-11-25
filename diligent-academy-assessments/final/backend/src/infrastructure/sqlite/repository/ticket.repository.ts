@@ -10,6 +10,7 @@ import { db } from "../db";
 
 export class SqliteTicketRepository implements TicketRepository {
 
+
   async findAllActive(): Promise<Ticket[]> {
     const database = await db;
     const tickets = await database.all("SELECT * FROM tickets WHERE deleted_at IS NULL");
@@ -40,16 +41,24 @@ export class SqliteTicketRepository implements TicketRepository {
   }
   async create(properties: CreateTicketProperties): Promise<Ticket> {
     const database = await db;
-    const created = await database.get(
-      "INSERT INTO tickets (name, description, board_id, status_id) VALUES (?, ?, ?, ?) RETURNING *"
-      , [properties.name, properties.description, properties.board_id, properties.status_id]);
+    try {
+      const created = await database.get(
+        "INSERT INTO tickets (name, description, board_id, status_id) VALUES (?, ?, ?, ?) RETURNING *"
+        , [properties.name.getValue(), properties.description, properties.board_id, properties.status_id]);
 
-    if (created.changes === 0) {
-      throw new NoRecordCreated();
+      if (created.changes === 0) {
+        throw new NoRecordCreated();
+      }
+      
+      return Ticket.fromPersistence(created);
+    } catch (error) {
+      if ((error as { code: string })?.code === "SQLITE_CONSTRAINT") {
+        throw new RecordNameInvalid(properties.name.getValue());
+      }
+      throw error;
     }
-
-    return Ticket.fromPersistence(created);
   }
+
   async getById(id: string): Promise<Ticket> {
     const database = await db;
     const ticket = await database.get("SELECT * FROM tickets WHERE id = ?", [id]);
@@ -60,13 +69,13 @@ export class SqliteTicketRepository implements TicketRepository {
 
     return Ticket.fromPersistence(ticket);
   }
-  async updateById(ticket: Ticket): Promise<Ticket> {
+  async update(ticket: Ticket): Promise<Ticket> {
     const database = await db;
 
     try {
       const updated = await database.get(
-        "UPDATE tickets SET name = ?, description = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? RETURNING *",
-        [ticket.name.getValue(), ticket.description, ticket.id]
+        "UPDATE tickets SET name = ?, description = ?, status_id = ? updated_at = CURRENT_TIMESTAMP WHERE id = ? RETURNING *",
+        [ticket.name.getValue(), ticket.description, ticket.status_id, ticket.id]
       );
 
       if (updated.changes === 0) {
@@ -83,7 +92,7 @@ export class SqliteTicketRepository implements TicketRepository {
     }
 
   }
-  async deleteById(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     const database = await db;
     const deleted = await database.run(
       "UPDATE tickets SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?",
@@ -93,5 +102,5 @@ export class SqliteTicketRepository implements TicketRepository {
     if (deleted.changes === 0) {
       throw new NoRecordUpdated(id);
     }
-  }  
+  }
 }

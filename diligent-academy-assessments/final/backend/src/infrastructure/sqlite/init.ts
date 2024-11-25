@@ -58,7 +58,6 @@ async function setup() {
       deleted_at TIMESTAMP,
       FOREIGN KEY (board_id) REFERENCES boards(id),
       FOREIGN KEY (status_id) REFERENCES statuses(id)
-      UNIQUE (name, status_id)
     );
   `);
 

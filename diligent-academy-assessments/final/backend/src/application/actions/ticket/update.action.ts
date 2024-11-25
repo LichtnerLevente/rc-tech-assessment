@@ -1,16 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { updateSchema } from "./schemas";
 import { operations } from "../../../openapi-spec/types";
-import { StatusName } from "../../../domain/value-object/status-name";
-import { UpdateStatusPropertires } from "../../../shared/types";
-import { UpdateStatus } from "../../use-cases/status/update-status";
-import { SqliteStatusRepository } from "../../../infrastructure/sqlite/repository/status.repository";
 import { BadRequestError } from "../../../domain/error/bad-request.error";
 import { z } from "zod";
-import { Status } from "../../../domain/status.entity";
 import { Ticket } from "../../../domain/ticket.entity";
 import { TicketName } from "../../../domain/value-object/ticket-name";
-import { UpdateTicket } from "../../use-cases/status/update-ticket";
+import { UpdateTicket } from "../../use-cases/ticket/update-ticket";
 import { SqliteTicketRepository } from "../../../infrastructure/sqlite/repository/ticket.repository";
 
 
