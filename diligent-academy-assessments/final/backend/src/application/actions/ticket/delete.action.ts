@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { byIdSchema } from "./schemas";
-import { DeleteBoard } from "../../use-cases/board/delete-board";
-import { SqliteBoardRepository } from "../../../infrastructure/sqlite/repository/board.repository";
 import { z } from "zod";
 import { BadRequestError } from "../../../domain/error/bad-request.error";
+import { DeleteTicket } from "../../use-cases/ticket/delete-ticket";
+import { SqliteTicketRepository } from "../../../infrastructure/sqlite/repository/ticket.repository";
 
 export async function deleteAction(
   req: FastifyRequest,
@@ -12,7 +12,7 @@ export async function deleteAction(
   try {
     const { id } = byIdSchema.parse(req.params);
 
-    const useCase = new DeleteBoard(new SqliteBoardRepository());
+    const useCase = new DeleteTicket(new SqliteTicketRepository());
     await useCase.onRequest(id);
 
     return res.status(204).send();

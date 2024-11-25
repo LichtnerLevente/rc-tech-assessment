@@ -2,6 +2,7 @@ import { Board } from "../../../domain/board.entity";
 import { BadRequestError } from "../../../domain/error/bad-request.error";
 import { BoardRepository } from "../../../domain/repository/board.repository";
 import { NoRecordCreated } from "../../../infrastructure/error/no-record-created.error";
+import { RecordKeyInvalid } from "../../../infrastructure/error/record-key-invalid.error";
 import { RecordNameInvalid } from "../../../infrastructure/error/record-name-invalid.error";
 import { CreateBoardProperties } from "../../../shared/types";
 
@@ -16,6 +17,11 @@ export class CreateBoard {
         throw new BadRequestError(
           properties.name.getValue(),
           "Record name invalid"
+        );
+      } else if (error instanceof RecordKeyInvalid) {
+        throw new BadRequestError(
+          properties.name.getValue(),
+          "Record key invalid"
         );
       } else if (error instanceof NoRecordCreated) {
         throw new BadRequestError(
