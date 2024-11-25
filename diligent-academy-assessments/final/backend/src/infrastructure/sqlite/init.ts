@@ -42,19 +42,21 @@ async function setup() {
       deleted_at TIMESTAMP,
       FOREIGN KEY (board_id) REFERENCES boards(id),
       UNIQUE (name, board_id)
-    );
-  `);
+    ); 
+  `);  //shouldnt allow multyple non deleted statuses with the same position for within a board
 
   await database.exec(`
     CREATE TABLE IF NOT EXISTS tickets (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
       board_id INTEGER NOT NULL,
-      status_id INTEGER,
+      status_id INTEGER NOT NULL,
       description TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      deleted_at TIMESTAMP
+      deleted_at TIMESTAMP,
+      FOREIGN KEY (board_id) REFERENCES boards(id),
+      FOREIGN KEY (status_id) REFERENCES statuses(id)
     );
   `);
 
@@ -95,6 +97,16 @@ async function setup() {
     ('In Progress', 4, 2),
     ('Done', 4, 3);
   `);
+
+  await database.exec(`
+    ALTER TABLE boards ADD COLUMN _key_ TEXT;
+    `)
+  await database.exec(`
+    CREATE UNIQUE INDEX idx_boards_key ON boards(_key_);
+  `)
+  await database.exec(`
+    UPDATE boards SET _key_ = id || name;
+  `)
 
   console.log("Database setup complete with default boards and statuses.");
 }

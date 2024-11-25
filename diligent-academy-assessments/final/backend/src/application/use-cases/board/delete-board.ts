@@ -1,6 +1,6 @@
-import { BadRequestError } from "../../domain/error/bad-request.error";
-import { BoardRepository } from "../../domain/repository/board.repository";
-import { NoRecordUpdated } from "../../infrastructure/error/no-record-updated.error";
+import { BadRequestError } from "../../../domain/error/bad-request.error";
+import { BoardRepository } from "../../../domain/repository/board.repository";
+import { NoRecordUpdated } from "../../../infrastructure/error/no-record-updated.error";
 
 export class DeleteBoard {
   constructor(private readonly boardRepository: BoardRepository) {}
