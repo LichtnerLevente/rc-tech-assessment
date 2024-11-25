@@ -4,6 +4,7 @@ import { CreateBoardProperties } from "../../../shared/types";
 import { NoRecordCreated } from "../../error/no-record-created.error";
 import { NoRecordFound } from "../../error/no-record-found";
 import { NoRecordUpdated } from "../../error/no-record-updated.error";
+import { RecordKeyInvalid } from "../../error/record-key-invalid.error";
 import { RecordNameInvalid } from "../../error/record-name-invalid.error";
 import { db } from "../db";
 
@@ -32,8 +33,8 @@ export class SqliteBoardRepository implements BoardRepository {
     const database = await db;
     try {
       const created = await database.get(
-        "INSERT INTO boards (name, description) VALUES (?, ?) RETURNING *",
-        [properties.name.getValue(), properties.description]
+        "INSERT INTO boards (name, description, _key_) VALUES (?, ?, ?) RETURNING *",
+        [properties.name.getValue(), properties.description, properties.key.getValue()]
       );
 
       if (created.changes === 0) {
@@ -43,7 +44,14 @@ export class SqliteBoardRepository implements BoardRepository {
       return Board.fromPersistence(created);
     } catch (error) {
       if ((error as { code: string })?.code === "SQLITE_CONSTRAINT") {
-        throw new RecordNameInvalid(properties.name.getValue());
+
+        if ((error as { message: string })?.message.includes("name")){
+          throw new RecordNameInvalid(properties.name.getValue());
+        } else if ((error as { message: string })?.message.includes("key")){
+          throw new RecordKeyInvalid(properties.name.getValue());
+        } else {
+          throw new NoRecordCreated();
+        }
       }
 
       throw error;

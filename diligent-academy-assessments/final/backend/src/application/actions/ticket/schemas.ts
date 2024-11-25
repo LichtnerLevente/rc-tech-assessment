@@ -5,6 +5,15 @@ export const byIdSchema = z.object({
   id: z.string().min(1),
 });
 
+export const createSchema = z.object({
+  body: z.object({
+    name: z.string().min(1),
+    description: z.string().min(1),
+    board_id: z.number().min(1),
+    status_id: z.number().min(1)
+   }),
+});
+
 export const updateSchema = z.object({
   params: z.object({
     id: z.string().min(1),
@@ -12,14 +21,7 @@ export const updateSchema = z.object({
   body: z.object({
     name: z.string().min(1),
     description: z.string().min(1),
-  }),
-});
-
-
-export const createSchema = z.object({
-  body: z.object({
-    name: z.string().min(1),
-    description: z.string().min(1),
-    _key_: z.string().length(4).toUpperCase()
-  }),
+    board_id: z.number().min(1),
+    status_id: z.number().min(1)
+  })
 });
