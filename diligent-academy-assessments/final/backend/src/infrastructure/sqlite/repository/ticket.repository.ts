@@ -1,6 +1,7 @@
 import { TicketRepository } from "../../../domain/repository/ticket.repository";
 import { Ticket } from "../../../domain/ticket.entity";
 import { CreateTicketProperties } from "../../../shared/types";
+import { NoRecordFound } from "../../error/no-record-found";
 import { db } from "../db";
 
 
@@ -21,8 +22,16 @@ export class SqliteTicketRepository implements TicketRepository {
     throw new Error("Method not implemented.");
   }
   async getById(id: string): Promise<Ticket> {
-    throw new Error("Method not implemented.");
+    const database = await db;
+    const ticket = await database.get("SELECT * FROM tickets WHERE id = ?", [id]);
+
+    if (!ticket) {
+      throw new NoRecordFound(id);
+    }
+
+    return Ticket.fromPersistence(ticket);
   }
+  
   async updateById(status: Ticket): Promise<Ticket> {
     throw new Error("Method not implemented.");
   }
