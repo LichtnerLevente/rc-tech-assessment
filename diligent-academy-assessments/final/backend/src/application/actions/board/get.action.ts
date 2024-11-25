@@ -3,7 +3,7 @@ import { SqliteBoardRepository } from "../../../infrastructure/sqlite/repository
 import { Board } from "../../../domain/board.entity";
 import { z } from "zod";
 import { BadRequestError } from "../../../domain/error/bad-request.error";
-import { GetBoardById } from "../../use-cases/get-board-by-id";
+import { GetBoardById } from "../../use-cases/board/get-board-by-id";
 import { byIdSchema } from "./schemas";
 import { operations } from "../../../openapi-spec/types";
 

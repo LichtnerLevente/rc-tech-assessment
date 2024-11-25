@@ -1,5 +1,5 @@
-import { Board } from "../../domain/board.entity";
-import { BoardRepository } from "../../domain/repository/board.repository";
+import { Board } from "../../../domain/board.entity";
+import { BoardRepository } from "../../../domain/repository/board.repository";
 
 export class GetBoards {
   constructor(readonly boardRepository: BoardRepository) {}

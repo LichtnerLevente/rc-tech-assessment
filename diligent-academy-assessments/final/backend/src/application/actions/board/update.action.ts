@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { updateSchema } from "./schemas";
-import { UpdateBoard } from "../../use-cases/update.board";
+import { UpdateBoard } from "../../use-cases/board/update.board";
 import { SqliteBoardRepository } from "../../../infrastructure/sqlite/repository/board.repository";
 import { Board } from "../../../domain/board.entity";
 import { BadRequestError } from "../../../domain/error/bad-request.error";

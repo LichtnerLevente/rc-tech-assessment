@@ -111,6 +111,159 @@ paths:
           description: Board not found
         "500":
           description: Internal server error
+  /boards/{id}/statuses:
+    get:
+      summary: Get statuses for a single board
+      operationId: getStatusesByBoardId
+      responses:
+        "200":
+          description: A list of statuses for the board
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Status"
+        "500":
+          description: Internal server error
+  /boards/{board_id}/statuses/positions:
+    patch:
+      summary: Update positions for statuses under a board
+      operationId: updateStatusPositionsByBoardId
+      parameters:
+        - in: path
+          name: board_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/StatusPosition"
+      responses:
+        "200":
+          description: The updated positions
+          content:
+           application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StatusPosition"
+        "400":
+          description: Bad request
+        "404":
+          description: Board not found
+        "500":
+          description: Internal server error
+  /statuses:
+    get:
+      summary: Get all statuses
+      operationId: getStatuses
+      responses:
+        "200":
+          description: A list of statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Status"
+        "500":
+          description: Internal server error
+    post:
+      summary: Create a new status
+      operationId: createStatus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusInput"
+      responses:
+        "201":
+          description: The created status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "400":
+          description: Bad request
+        "500":
+          description: Internal server error
+  /statuses/{id}:
+    get:
+      summary: Get a status by ID
+      operationId: getStatusById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The requested status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "400":
+          description: Bad request
+        "404":
+          description: Status not found
+        "500":
+          description: Internal server error
+    patch:
+      summary: Update a status by ID
+      operationId: updateStatus
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusInput"
+      responses:
+        "200":
+          description: The updated status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "400":
+          description: Bad request
+        "404":
+          description: Status not found
+        "500":
+          description: Internal server error
+  /statuses/{id}/delete:
+    delete:
+      summary: Soft delete a status by ID
+      operationId: deleteStatus
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Status soft deleted
+        "400":
+          description: Bad request
+        "404":
+          description: Status not found
+        "500":
+          description: Internal server error
 components:
   schemas:
     Board:
@@ -131,3 +284,33 @@ components:
           type: string
       required:
         - name
+    Status:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        board_id:
+          type: integer
+        position:
+          type: integer
+    StatusInput:
+      type: object
+      properties:
+        name:
+          type: string
+        board_id:
+          type: integer
+      required:
+        - name
+    StatusPosition:
+      type: object
+      properties:
+        id: 
+          type: integer
+        position: 
+          type: integer
+      required:
+        - id
+        - position

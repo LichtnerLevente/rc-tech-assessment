@@ -1,6 +1,6 @@
-import { Board } from "../../domain/board.entity";
-import { BadRequestError } from "../../domain/error/bad-request.error";
-import { BoardRepository } from "../../domain/repository/board.repository";
+import { Board } from "../../../domain/board.entity";
+import { BadRequestError } from "../../../domain/error/bad-request.error";
+import { BoardRepository } from "../../../domain/repository/board.repository";
 
 export class UpdateBoard {
   constructor(private readonly boardRepository: BoardRepository) {}
